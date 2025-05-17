@@ -1,0 +1,16 @@
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# Maven / Gradle
+target/
+build/
+
+# Java derleme çıktıları
+*.class
+
+# VS Code (eğer kullandıysan)
+.vscode/
+
+# İşletim sistemi gereçleri
+Thumbs.db
