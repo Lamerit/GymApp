@@ -28,5 +28,6 @@ public class Coach {
     public void setTrainees(List<User> trainees) { this.trainees = trainees; }
 
     public void setId(Integer coachId) {
+
     }
 }

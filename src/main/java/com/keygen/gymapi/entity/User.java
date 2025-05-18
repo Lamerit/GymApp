@@ -15,6 +15,12 @@ public class User {
     public void setId(Long id) {
         this.id = id;
     }
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "role_id", nullable = false)
+    private Role role;
+
+    public Role getRole() { return role; }
+    public void setRole(Role role) { this.role = role; }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -77,8 +83,6 @@ public class User {
     public void setIsCheckedIn(Boolean isCheckedIn) { this.isCheckedIn = isCheckedIn; }
     public LocalDateTime getLastCheckinTime() { return lastCheckinTime; }
     public void setLastCheckinTime(LocalDateTime lastCheckinTime) { this.lastCheckinTime = lastCheckinTime; }
-    public Integer getRoleId() {return roleId;}
-    public void setRoleId(Integer roleId) {this.roleId = roleId;}
     public Gym getGym() {return gym;}
     public void setGym(Gym gym) {this.gym = gym;}
     public Coach getCoach() {return coach;}

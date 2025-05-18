@@ -4,6 +4,7 @@ import com.keygen.gymapi.security.JwtAuthorizationFilter;
 import com.keygen.gymapi.config.JwtUtill;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -19,6 +20,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity  // zaten varsa tamam
+
 public class SecurityConfig {
 
     @Autowired
@@ -40,21 +43,12 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http,
-                                           AuthenticationManager authManager) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
-                .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
-                        .anyRequest().authenticated()
-                )
-                // **Bu satırı mutlaka ekle:**
-                .addFilterBefore(
-                        new JwtAuthorizationFilter(jwtUtill, userDetailsService),
-                        UsernamePasswordAuthenticationFilter.class
+                        .requestMatchers("/api/**").permitAll()   // **tüm** /api çağrılarını aç
                 );
-
         return http.build();
     }
 }

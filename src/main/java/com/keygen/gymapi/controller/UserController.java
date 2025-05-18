@@ -1,5 +1,7 @@
 package com.keygen.gymapi.controller;
 
+import com.keygen.gymapi.entity.Role;
+import com.keygen.gymapi.repository.RoleRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -37,25 +39,21 @@ public class UserController {
         this.mapper = mapper;
     }
 
+    @Autowired
+    private RoleRepository roleRepo;
+
+// ...
+
     @PostMapping
     public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto dto) {
         User user = mapper.toEntity(dto);
 
-        // Convert Integer gymId/coachId to Long for findById
-        Long gymId = dto.getGymId().longValue();
-        Long coachId = dto.getCoachId().longValue();
-        user.setRoleId(       dto.getRoleId());
-        user.setIsCheckedIn(  dto.getCheckedIn());
-        user.setLastCheckinTime(dto.getLastCheckinTime());
+        // roleId yerine:
+        Role role = roleRepo.findById(dto.getRoleId())
+                .orElseThrow(() -> new RuntimeException("Role not found: " + dto.getRoleId()));
+        user.setRole(role);
 
-        Gym gym = gymRepo.findById(gymId)
-                .orElseThrow(() -> new RuntimeException("Gym not found: " + gymId));
-        Coach coach = coachRepo.findById(coachId)
-                .orElseThrow(() -> new RuntimeException("Coach not found: " + coachId));
-
-        user.setGym(gym);
-        user.setCoach(coach);
-
+        // gym ve coach atamaları zaten doğru...
         User saved = userRepo.save(user);
         return ResponseEntity.ok(mapper.toDto(saved));
     }

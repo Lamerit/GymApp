@@ -29,6 +29,8 @@ public class UserDto {
     private LocalDateTime lastCheckinTime;
 
     @NotNull
+    private Integer coachId;
+    @NotNull
     private Integer roleId;
     @NotNull
     private Integer gymId;
@@ -129,10 +131,5 @@ public class UserDto {
     public void setCoachId(Integer coachId) {
         this.coachId = coachId;
     }
-
-
-    @NotNull
-    private Integer coachId;
-
 
 }
