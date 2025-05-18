@@ -54,9 +54,6 @@ public class User {
 
     private LocalDateTime lastCheckinTime;
 
-    @NotNull(message = "Role girilmeli")
-    private Integer roleId;
-
     @ManyToOne
     @JoinColumn(name = "gym_id", nullable = false)
     private Gym gym;
